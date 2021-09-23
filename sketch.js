@@ -148,7 +148,9 @@ function keyPressed(){
     checkEdge();
   }
   if (keyIsDown(UP_ARROW)) 
-  {
+  {    
+    switch(edge) 
+    {
       case 1:
         rectPosY -= pjs;
         break;
