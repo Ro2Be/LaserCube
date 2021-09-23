@@ -58,22 +58,40 @@ function setup() {
   songBySANDU.loop([0],[1.12],[0.3],[0],[77]);
 }
 
-function draw() {
-  if (go === 0) {
-  timeEvents();
-  nextLevel ();
-  showLazers();
-  keyPressed();
-  showPlayer();
-  showInformation ();
-  if(edge === 1) {if (rectPosY != ch - recth -0.1)   {rectPosY += g;}}
-  if(edge === 2) {if (rectPosX != -0.1)            {rectPosX -= g;}}
-  if(edge === 3) {if (rectPosY != -0.1)            {rectPosY -= g;}}
-  if(edge === 4) {if (rectPosX != cw - rectw -0.1)   {rectPosX += g;}}
-  checkEdge();
-  t += 1;
-  } //Game
-  if (go === 1) {
+function draw() 
+{
+  if (go === 0) 
+  { //game
+    timeEvents();
+    nextLevel ();
+    showLazers();
+    keyPressed();
+    showPlayer();
+    showInformation ();
+    switch(edge) 
+    {
+      case 1:
+        if (rectPosY != ch - recth -0.1)
+          rectPosY += g;
+        break;
+      case 2:
+        if (rectPosX != -0.1)        
+          rectPosX -= g;
+        break;
+      case 3:
+        if (rectPosY != -0.1)            
+          rectPosY -= g;
+        break;
+      case 4:
+        if (rectPosX != cw - rectw -0.1)   
+          rectPosX += g;
+        break;
+    }  
+    checkEdge();
+    t += 1;
+  } 
+  else
+  { //gameover
     t = 0;
     background(0);
     fill (255, 0, 155)
@@ -84,133 +102,204 @@ function draw() {
     fill (255);
     text("AGAIN", cw/2 - 35, ch/2 + 60);
     showInformation();
-  } //GameOver,
+  }
 }
 
 function keyPressed(){
-  if (go === 1 & keyIsDown(ENTER)) {restart();}
-  if (keyIsDown(LEFT_ARROW)) {
-    if(edge === 1) {rectPosX -= prs * lr + acs;}
-    if(edge === 2) {rectPosY -= prs * lr + acs;}
-    if(edge === 3) {rectPosX += prs * lr + acs;}
-    if(edge === 4) {rectPosY += prs * lr + acs;}    
+  if (keyIsDown(ENTER) 
+    & go === 1) 
+    restart();
+  if (keyIsDown(LEFT_ARROW)) 
+  {
+    switch(edge) 
+    {
+      case 1:
+        rectPosX -= prs * lr + acs;
+        break;
+      case 2:
+        rectPosY -= prs * lr + acs,
+        break;
+      case 3:
+        rectPosX += prs * lr + acs;
+        break;
+      case 4:
+        rectPosY += prs * lr + acs;
+        break;
+    }  
     checkEdge();
   }
-  if (keyIsDown(RIGHT_ARROW)) {
-    if(edge === 1) {rectPosX += prs * lr + acs;}
-    if(edge === 2) {rectPosY += prs * lr + acs;}
-    if(edge === 3) {rectPosX -= prs * lr + acs;}
-    if(edge === 4) {rectPosY -= prs * lr + acs;}    
+  if (keyIsDown(RIGHT_ARROW)) 
+  {
+    switch(edge) 
+    {
+      case 1:
+        rectPosX += prs * lr + acs;
+        break;
+      case 2:
+        rectPosY += prs * lr + acs,
+        break;
+      case 3:
+        rectPosX -= prs * lr + acs;
+        break;
+      case 4:
+        rectPosY -= prs * lr + acs;
+        break;
+    }     
     checkEdge();
   }
-  if (keyIsDown(UP_ARROW)) {
-    if(edge === 1) {rectPosY -= pjs;}
-    if(edge === 2) {rectPosX += pjs;}
-    if(edge === 3) {rectPosY += pjs;}
-    if(edge === 4) {rectPosX -= pjs;}
+  if (keyIsDown(UP_ARROW)) 
+  {
+      case 1:
+        rectPosY -= pjs;
+        break;
+      case 2:
+        rectPosX += pjs;
+        break;
+      case 3:
+        rectPosY += pjs;
+        break;
+      case 4:
+        rectPosX -= pjs;
+        break;
+    }     
     lr = 0;
     checkEdge();
   }
 }
 
-function mousePressed() {
-  if (go === 1 & mouseX > cw/2 - 55 & mouseX < cw/2 + 55 & mouseY > ch/2 + 30 & mouseY < cw/2 + 70) {restart();}
+function mousePressed() 
+{
+  if (go === 1 
+    & cw / 2 - 55 < mouseX
+    & mouseX < cw/2 + 55 
+    & ch / 2 + 30 < mouseY 
+    & mouseY < cw/2 + 70) 
+    restart();
 }
 
-function checkEdge(){
-    if(rectPosX < 0) {edge = 2; rectPosX = 0; lr = 1;}
-    if(rectPosY < 0) {edge = 3; rectPosY = 0; lr = 1;}
-    if(rectPosX + rectw > cw) {edge = 4; rectPosX = cw - rectw; lr = 1;}
-    if(rectPosY + recth > ch) {edge = 1; rectPosY = ch - recth; lr = 1;}
+function checkEdge()
+{
+    if(rectPosX < 0) 
+    {
+      edge = 2; 
+      rectPosX = 0; 
+      lr = 1;
+    }
+    if(rectPosY < 0) 
+    {
+      edge = 3; 
+      rectPosY = 0; 
+      lr = 1;
+    }
+    if(cw < rectPosX + rectw) 
+    {
+      edge = 4; 
+      rectPosX = cw - rectw; 
+      lr = 1;
+    }
+    if(ch < rectPosY + recth) 
+    {
+      edge = 1; 
+      rectPosY = ch - recth; 
+      lr = 1;
+    }
 }
 
 function timeEvents() {
   strokeWeight (t/4);
-  if (te0 < t) {background (0); stroke (map(t, 0, te2, 0, 255), 255, map(t, 0, te2, 0, 255), map(t, 0, 50, 0, 255));}
-  if (te1 === t) {soundLaserCanon.play([0],[0.7],[0.5],[0],[1]);}
-  if (te1 < t) {stroke (255, map(t, te1, te3, 255, 0), map(t, te1, te3, 255, 0), 200);}
-  if (te2 === t) {soundAlarmClock.play([0],[1],[1],[0],[1.2]);}
-  if (te2 < t) {gameOver();}
-  if (te3 < t) {background (map(t, te3, te4, 255, 0));strokeWeight(map(t, te3, te4, 20,0))}
-  if (te4 < t) {background(0); strokeWeight(0);}
-}
-
-function createLazerPoints () {
-  lp = [];
-  for (var i = 0; i < 2*lc; i++) {lp.push(random(-ch/2, 3*ch/2));
+  if (te0 < t)
+  {
+    background (0); 
+    stroke (map(t, 0, te2, 0, 255), 255, map(t, 0, te2, 0, 255), map(t, 0, 50, 0, 255));
+  }
+  if (te1 === t) 
+    soundLaserCanon.play([0],[0.7],[0.4],[0],[1]);
+  if (te1 < t) 
+    stroke (255, map(t, te1, te3, 255, 0), map(t, te1, te3, 255, 0), 200);
+  if (te2 === t) 
+    soundAlarmClock.play([0],[1],[0.4],[0],[1.2]);
+  if (te2 < t) 
+    gameOver();
+  if (te3 < t) 
+    background (map(t, te3, te4, 255, 0));strokeWeight(map(t, te3, te4, 20,0))
+  if (te4 < t)
+  {
+    background(0); 
+    strokeWeight(0);
   }
 }
 
-function nextLevel () { 
-  if (t === lt) {
+function createLazerPoints () 
+{
+  lp = [];
+  for (var i = 0; i < 2*lc; i++) 
+    lp.push(random(-ch/2, 3*ch/2));
+}
+
+function nextLevel () 
+{ 
+  if (t === lt) 
+  {
     this.createLazerPoints ();
     t = 0;
-    if (lc != mlc) {lc += 1;}
+    if (lc != mlc) 
+      lc += 1;
     gs += gsa;
     sc += 1;
   } 
 }
 
-function showLazers () {
-  for (var i = 0; i < lc; i++) { line (-rectw, lp[i], cw + rectw, lp[i + lc]); }
+function showLazers () 
+{
+  for (var i = 0; i < lc; i++) 
+    line (-rectw, lp[i], cw + rectw, lp[i + lc]);
 }
 
-function showPlayer () {
+function showPlayer () 
+{
   noStroke ();
   fill (255, 0, 155);
   rect (rectPosX, rectPosY, rectw, recth);
 }
 
-function gameOver () {
- if (te4 < t) {return;}
- for (var i = 0; i < lc; i++) 
- {
-   var y1 = lp[i];
-   var y2 = lp[i + lc]
- if (y1 > y2)
+function gameOver () 
+{
+  if (t < te4)
   { 
-    if (y2 + (cw + rectw - rectPosX)*(y1 - y2)/(2*rectw + cw) > rectPosY) 
+    for (var i = 0; i < lc; i++) 
     {
-       if (y2 + (cw - rectPosX)*(y1 - y2)/(2*rectw + cw) < rectPosY + recth) 
-      {
+      var y1 = lp[i];
+      var y2 = lp[i + lc];
+      if (y2 < y1
+       & rectPosY < y2 + (cw + rectw - rectPosX) * (y1 - y2) / (2 * rectw + cw)
+       & rectPosY + recth < y2 + (cw - rectPosX) * (y1 - y2) / (2 * rectw + cw))
        go = 1;
-      }
     }
   }
   
- if (y1 === y2) 
-  { 
-    if (y1 > y2) 
-    {
-       if (y1 < y2 + recth) 
-      {
-       go = 1;
-      }
-    }
-  }
+  if (y1 === y2
+    & y2 < y1
+    & y1 < y2 + recth)
+    go = 1;
   
-  if (y1 < y2) 
-  { 
-    if (y2 + (cw - rectPosX)*(y1 - y2)/(2*rectw + cw) > rectPosY) 
-    {
-       if (y2 + (cw +rectw - rectPosX)*(y1 - y2)/(2*rectw + cw) < rectPosY + recth) 
-      {
-       go = 1;
-      }
-    } 
-  }
- }
+  if (y1 < y2
+    & rectPosY < y2 + (cw - rectPosX) * (y1 - y2) / (2 * rectw + cw)
+    & y2 + (cw +rectw - rectPosX) * (y1 - y2) / (2 * rectw + cw) < rectPosY + recth) 
+    go = 1;
 }
 
-function restart () {
-go = 0;  
-lc = slc;
-sc = 0;
-this.createLazerPoints();
+function restart () 
+{
+  go = 0;  
+  lc = slc;
+  sc = 0;
+  this.createLazerPoints();
 }
 
-function showInformation () {
-  if (ts < sc) {ts = sc;}
+function showInformation () 
+{
+  if (ts < sc)
+    ts = sc;
   textSize(15); 
   text("Topscore: " + str(ts), 10, 20);
   text("Score: " + str(sc), 10, 40);
