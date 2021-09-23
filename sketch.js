@@ -117,7 +117,7 @@ function keyPressed(){
         rectPosX -= prs * lr + acs;
         break;
       case 2:
-        rectPosY -= prs * lr + acs,
+        rectPosY -= prs * lr + acs;
         break;
       case 3:
         rectPosX += prs * lr + acs;
@@ -136,7 +136,7 @@ function keyPressed(){
         rectPosX += prs * lr + acs;
         break;
       case 2:
-        rectPosY += prs * lr + acs,
+        rectPosY += prs * lr + acs;
         break;
       case 3:
         rectPosX -= prs * lr + acs;
